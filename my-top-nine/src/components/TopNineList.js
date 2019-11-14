@@ -11,8 +11,8 @@ const TNLWrapper = styled.div`
 	margin-top: 30px;
 	width: 100%;
 
-	h1 {
-		font-size: 4rem;
+	h3 {
+		font-size: 3rem;
 	}	
 `;
 

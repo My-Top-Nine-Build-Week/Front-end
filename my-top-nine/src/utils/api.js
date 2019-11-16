@@ -11,7 +11,6 @@ import {
 	LOAD_START,
 	LOAD_SUCCESS,
 	LOAD_FAILURE,
-	/*
 	ADD_START,
 	ADD_SUCCESS,
 	ADD_FAILURE,
@@ -20,8 +19,7 @@ import {
 	DELETE_FAILURE,
 	EDIT_START,
 	EDIT_SUCCESS,
-	EDIT_FAILURE,
-	*/
+	EDIT_FAILURE
 } from '../reducers/topNineReducer';
 
 
@@ -41,8 +39,6 @@ export const apiWithAuth = () => {
 
 
 export const login = (credentials, dispatch) => {
-	// note: errorSetter sets local state in the login form
-	// dispatch updates the global state
 
 	console.log('inside login');
 	console.log(credentials);
@@ -95,7 +91,8 @@ export const register = (credentials, registerSetter, dispatch) => {
 
 export const getTopNine = (dispatch) => {
 
-	// if we're not logged in, do nothing
+	// This method gets called at start-up.  To avoid a
+	// pointless api call, do nothing if we're not logged in
 	if (!localStorage.getItem('MTN-token')) return;
 
 	dispatch({ type: LOAD_START });
@@ -117,6 +114,100 @@ export const getTopNine = (dispatch) => {
 				dispatch({ type: LOGOUT });
 			} else {
 				dispatch({ type: LOAD_FAILURE, payload: err.message });
+			}
+		});
+};
+
+
+export const addTopNine = (topNine, topNineState, dispatch) => {
+
+	dispatch({ type: ADD_START });
+
+	apiWithAuth().post(`${baseURL}/home/add-top-nine`)
+		.then(res => {
+			console.log(`axios POST /home/add-top-nine response:`);
+			console.log(res);
+
+			// the response is just a success message with the new id
+			// we will update the top-nine list ourselves
+			const newTopNineList =
+				topNineState.topNineList.concat([{...topNine, id: res.data.id, user_id: topNineState.user_id}]);
+
+			dispatch({type: ADD_SUCCESS, payload: newTopNineList});
+		})
+		.catch(err => {
+			console.log(`axios POST /home/add-top-nine error:`);
+			console.log(err);
+
+			// if we have a 401 error, that means our token is expired or invalid
+			if (err.message.includes('401')) {
+				localStorage.removeItem('MTN-token');
+				dispatch({ type: LOGOUT });
+			} else {
+				dispatch({ type: ADD_FAILURE, payload: err.message });
+			}
+		});
+};
+
+
+export const updateTopNine = (id, topNine, topNineState, dispatch) => {
+
+	dispatch({ type: EDIT_START });
+
+	apiWithAuth().put(`${baseURL}/home/${id}/edit-top-nine`)
+		.then(res => {
+			console.log(`axios PUT /home/${id}/edit-top-nine response:`);
+			console.log(res);
+
+			// the response is just a success message with the id
+			// we will update the top-nine list ourselves
+			const updatedTopNine = {...topNine, id: id, user_id: topNineState.user_id};
+			const updatedIndex = topNineState.topNineList.findIndex(item => item.id === id);
+			const frontTopNineList = topNineState.topNineList.slice(0, updatedIndex);
+			const backTopNineList = topNineState.topNineList.slice(updatedIndex + 1);
+			const newTopNineList = frontTopNineList.concat([updatedTopNine]).concat(backTopNineList);
+
+			dispatch({type: EDIT_SUCCESS, payload: newTopNineList});
+		})
+		.catch(err => {
+			console.log(`axios POST /home/add-top-nine error:`);
+			console.log(err);
+
+			// if we have a 401 error, that means our token is expired or invalid
+			if (err.message.includes('401')) {
+				localStorage.removeItem('MTN-token');
+				dispatch({ type: LOGOUT });
+			} else {
+				dispatch({ type: EDIT_FAILURE, payload: err.message });
+			}
+		});
+};
+
+
+export const deleteTopNine = (id, topNineState, dispatch) => {
+
+	dispatch({ type: DELETE_START });
+
+	apiWithAuth().delete(`${baseURL}/home/${id}/delete-top-nine`)
+		.then(res => {
+			console.log(`axios DELETE /home/${id}/delete-top-nine response:`);
+			console.log(res);
+
+			// the response is just a success message; we need to adjust the state ourselves
+			const newTopNineList = topNineState.topNineList.filter(item => item.id !== id);
+
+			dispatch({type: DELETE_SUCCESS, payload: newTopNineList});
+		})
+		.catch(err => {
+			console.log(`axios DELETE /home/${id}/delete-top-nine error:`);
+			console.log(err);
+
+			// if we have a 401 error, that means our token is expired or invalid
+			if (err.message.includes('401')) {
+				localStorage.removeItem('MTN-token');
+				dispatch({ type: LOGOUT });
+			} else {
+				dispatch({ type: DELETE_FAILURE, payload: err.message });
 			}
 		});
 };

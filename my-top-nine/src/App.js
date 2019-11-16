@@ -9,6 +9,7 @@ import { getTopNine } from './utils/api';
 
 import Welcome from './components/Welcome';
 import TopNineList from './components/TopNineList';
+import AddTopNine from './components/AddTopNine';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './components/Login';
 import Register from './components/Register';
@@ -75,6 +76,7 @@ const App = () => {
 				</div>
 
 				<Route exact path='/' component={Welcome} />
+				<ProtectedRoute path='/addtopnine' component={AddTopNine} />
 				<ProtectedRoute path='/topnine' component={TopNineList} />
 				<Route path='/register' component={Register} />
 				<ProtectedRoute path='/logout' component={Logout} />

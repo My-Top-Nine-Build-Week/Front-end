@@ -97,7 +97,7 @@ export const getTopNine = (dispatch) => {
 
 	dispatch({ type: LOAD_START });
 
-	apiWithAuth().get(`${baseURL}/home`)
+	apiWithAuth().get('/home')
 		.then(res => {
 			console.log('axios GET /home response:');
 			console.log(res);
@@ -119,20 +119,25 @@ export const getTopNine = (dispatch) => {
 };
 
 
-export const addTopNine = (topNine, topNineState, dispatch) => {
+export const addTopNine = (topNine, setAdding, topNineState, dispatch) => {
 
 	dispatch({ type: ADD_START });
 
-	apiWithAuth().post(`${baseURL}/home/add-top-nine`)
+	console.log('in addTopNine');
+	console.log(topNine);
+	console.log(topNineState);
+
+	apiWithAuth().post('/home/add-top-nine', topNine)
 		.then(res => {
 			console.log(`axios POST /home/add-top-nine response:`);
 			console.log(res);
 
 			// the response is just a success message with the new id
 			// we will update the top-nine list ourselves
+			setAdding(false);
+
 			const newTopNineList =
 				topNineState.topNineList.concat([{...topNine, id: res.data.id, user_id: topNineState.user_id}]);
-
 			dispatch({type: ADD_SUCCESS, payload: newTopNineList});
 		})
 		.catch(err => {
@@ -154,7 +159,7 @@ export const updateTopNine = (id, topNine, topNineState, dispatch) => {
 
 	dispatch({ type: EDIT_START });
 
-	apiWithAuth().put(`${baseURL}/home/${id}/edit-top-nine`)
+	apiWithAuth().put(`/home/${id}/edit-top-nine`, topNine)
 		.then(res => {
 			console.log(`axios PUT /home/${id}/edit-top-nine response:`);
 			console.log(res);
@@ -188,7 +193,7 @@ export const deleteTopNine = (id, topNineState, dispatch) => {
 
 	dispatch({ type: DELETE_START });
 
-	apiWithAuth().delete(`${baseURL}/home/${id}/delete-top-nine`)
+	apiWithAuth().delete(`/home/${id}/delete-top-nine`)
 		.then(res => {
 			console.log(`axios DELETE /home/${id}/delete-top-nine response:`);
 			console.log(res);

@@ -24,6 +24,12 @@ const RegisterWrapper = styled.div`
 		color: red;
 	}
 
+	.info {
+		font-size: 2rem;
+		color: red;
+	}
+
+
 	form {
 		display: flex;
 		flex-direction: column;
@@ -60,7 +66,7 @@ const RegisterWrapper = styled.div`
 		color: black;
 		border: none;
 		border-radius: 5px;
-		width: 60px;
+		width: 80px;
 		font-size: 1.4rem;
 		margin-top: 10px;
 
@@ -86,6 +92,8 @@ const Register = (props) => {
 		password: ''
 	});
 
+	const [registering, setRegistering] = useState(true);
+
 
 	const handleChange = (e) => {
 		setData({
@@ -100,23 +108,22 @@ const Register = (props) => {
 		if (!(data.name && data.password && data.email)) {
 			setError('You must supply a name, email address, and password!');
 		} else {
-			register(data, setError, dispatch);
+			register(data, setRegistering, dispatch);
 		}
 	};
 
 
 	// if we successfully registered, go to login display
-	/*
-	if ( topNineState.apiError === '' && topNineState.apiInProgress === false) {
+	if (!registering) {
 		return  (<Redirect to='/login' />);
 	}
-	*/
 
 	return (
 		<RegisterWrapper>
 			<h3>Register Page</h3>
 
 			{error && <div className='error'>{error}</div>}
+			{topNineState.apiMessage && <div className='info'>{topNineState.apiMessage}</div>}
 
 			<form onSubmit={handleSubmit}>
 

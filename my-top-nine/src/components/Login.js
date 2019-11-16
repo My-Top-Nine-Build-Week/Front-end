@@ -24,6 +24,11 @@ const LoginWrapper = styled.div`
 		color: red;
 	}
 
+	.info {
+		font-size: 2rem;
+		color: red;
+	}
+
 	form {
 		display: flex;
 		flex-direction: column;
@@ -81,7 +86,6 @@ const Login = (props) => {
 	const [error, setError] = useState();
 
 	const [data, setData] = useState({
-		name: '',
 		email: '',
 		password: ''
 	});
@@ -100,13 +104,17 @@ const Login = (props) => {
 		if (!(data.password && data.email)) {
 			setError('You must supply an email address and password!');
 		} else {
-			login(data, setError, dispatch);
+			console.log('calling login with data:');
+			console.log(data);
+
+			setError('');
+			login(data, dispatch);
 		}
 	};
 
 
 	// if we successfully logged in, go to top nine list display
-	if (topNineState.loggedIn) {
+	if (localStorage.getItem('MTN-token')) {
 		return  (<Redirect to='/topnine' />);
 	}
 
@@ -115,6 +123,7 @@ const Login = (props) => {
 			<h3>Login Page</h3>
 
 			{error && <div className='error'>{error}</div>}
+			{topNineState.apiMessage && <div className='info'>{topNineState.apiMessage}</div>}
 
 			<form onSubmit={handleSubmit}>
 

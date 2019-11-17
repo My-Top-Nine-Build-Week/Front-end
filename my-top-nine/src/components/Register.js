@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
-import { Redirect } from 'react-router-dom';
-import { TopNineContext } from '../contexts/TopNineContext';
 
+import { TopNineContext } from '../contexts/TopNineContext';
 import { register } from '../utils/api';
+import { REGISTER_FAILURE, REGISTER_SUCCESS } from '../reducers/topNineReducer';
 
 
 const RegisterWrapper = styled.div`
@@ -81,7 +81,6 @@ const RegisterWrapper = styled.div`
 
 const Register = (props) => {
 
-	// dispatcher for register function
 	const { topNineState, dispatch } = useContext(TopNineContext);
 
 	const [error, setError] = useState();
@@ -91,8 +90,6 @@ const Register = (props) => {
 		email: '',
 		password: ''
 	});
-
-	const [registering, setRegistering] = useState(true);
 
 
 	const handleChange = (e) => {
@@ -104,26 +101,24 @@ const Register = (props) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		setError('');
 
 		if (!(data.name && data.password && data.email)) {
 			setError('You must supply a name, email address, and password!');
 		} else {
-			register(data, setRegistering, dispatch);
+			register(data, dispatch);
 		}
 	};
 
-
-	// if we successfully registered, go to login display
-	if (!registering) {
-		return  (<Redirect to='/login' />);
-	}
 
 	return (
 		<RegisterWrapper>
 			<h3>Register Page</h3>
 
 			{error && <div className='error'>{error}</div>}
-			{topNineState.apiMessage && <div className='info'>{topNineState.apiMessage}</div>}
+			{(topNineState.apiAction === REGISTER_SUCCESS) &&
+				<div className='info'>Successfully registered...you can login now</div>}
+			{(topNineState.apiAction === REGISTER_FAILURE) && <div className='info'>{topNineState.apiMessage}</div>}
 
 			<form onSubmit={handleSubmit}>
 
@@ -132,7 +127,7 @@ const Register = (props) => {
 						value={data.name} onChange={handleChange} />
 				</label>
 				<label name='email'><span>Email:</span>
-					<input type='email' name='email' placeholder='Email'
+					<input type='text' name='email' placeholder='Email'
 						value={data.email} onChange={handleChange} />
 				</label>
 				<label name='password'><span>Password:</span>

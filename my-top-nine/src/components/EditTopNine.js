@@ -1,8 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
-import { TopNineContext } from '../contexts/TopNineContext';
 
+import { TopNineContext } from '../contexts/TopNineContext';
 import { editTopNine } from '../utils/api';
 
 
@@ -95,48 +95,29 @@ const ETNWrapper = styled.div`
 
 const EditTopNine = (props) => {
 
-	// dispatcher for editTopNine function
 	const { topNineState, dispatch } = useContext(TopNineContext);
 
-	const [error, setError] = useState();
+	const [error, setError] = useState('');
 
-	const [data, setData] = useState({
-		title: '',
-		description: '',
-		image_url: ''		
-	});
-
-	const [editing, setEditing] = useState(true);
-
-
-	console.log('in EditTopNine');
-	console.log(props);
+	const [edited, setEdited] = useState(false);
 
 	const id = Number.parseInt(props.match.params.id);
-
-	console.log(id);
-	console.log(topNineState.topNineList);
-
-
 	const oldTopNine = topNineState.topNineList.find(item => item.id === id);
 
-	/*
-	if (oldTopNine) {
-		setData({
-			title: oldTopNine.title,
-			description: oldTopNine.description,
-			image_url: oldTopNine.image_url		
-		});
-	}
 
-	console.log(data);
+	// initialize form state
+	const [data, setData] = useState({
+		title: oldTopNine ? oldTopNine.title : '',
+		description: oldTopNine ? oldTopNine.description : '',
+		image_url: oldTopNine ? oldTopNine.image_url : ''
+	});
 
-	// did we get a valid top nine to edit?
+
+	// did we get a valid top-nine to edit?
 	// if not, go back to top-nine-list
-	if (oldTopNine === undefined) {
+	if (!oldTopNine) {
 		return  (<Redirect to='/topnine' />);
 	}
-	*/
 
 
 	const handleChange = (e) => {
@@ -152,13 +133,13 @@ const EditTopNine = (props) => {
 		if (!(data.title && data.description)) {
 			setError('You must supply a title and description');
 		} else {
-			editTopNine(data, setEditing, topNineState, dispatch);
+			editTopNine(id, data, setEdited, topNineState, dispatch);
 		}
 	};
 
 
 	// if we successfully edited the item, go back to top-nine-list
-	if (!editing) {
+	if (edited) {
 		return  (<Redirect to='/topnine' />);
 	}
 
@@ -180,7 +161,7 @@ const EditTopNine = (props) => {
 						value={data.description} onChange={handleChange} />
 				</label>
 				<label name='image_url'><span>Image link:</span>
-					<input type='url' name='image_url' placeholder='Link'
+					<input type='text' name='image_url' placeholder='Link'
 						value={data.image_url} onChange={handleChange} />
 				</label>
 

@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
 import { TopNineContext } from '../contexts/TopNineContext';
 
-import { register } from '../utils/api';
+import { addTopNine } from '../utils/api';
 
 
-const RegisterWrapper = styled.div`
+const ATNWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -34,7 +34,7 @@ const RegisterWrapper = styled.div`
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		width: 350px;
+		width: 380px;
 		margin-top: 10px;
 		padding: 10px;
 		border: 2px solid grey;
@@ -42,23 +42,37 @@ const RegisterWrapper = styled.div`
 	}
 
 	label {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
 		font-size: 1.4rem;
 		font-style: italic;
 	}
 
 	span {
-		display: inline-block;
-		text-align: right;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
+		align-items: center;
 		width: 80px;
 		margin-right: 5px;
 	}
 
 	input {
 		font-size: 1.4rem;
+		width: 260px;
 		margin: 5px;
 		padding: 5px;
 	}
 
+	textarea {
+		font-size: 1.4rem;
+		margin: 5px;
+		padding: 5px;
+		width: 260px;
+		height: 80px;
+		font-family: sans-serif;
+	}
 
 	button {
 		height: 28px;
@@ -79,20 +93,20 @@ const RegisterWrapper = styled.div`
 `;
 
 
-const Register = (props) => {
+const AddTopNine = (props) => {
 
-	// dispatcher for register function
+	// dispatcher for addTopNine function
 	const { topNineState, dispatch } = useContext(TopNineContext);
 
 	const [error, setError] = useState();
 
 	const [data, setData] = useState({
-		name: '',
-		email: '',
-		password: ''
+		title: '',
+		description: '',
+		image_url: ''
 	});
 
-	const [registering, setRegistering] = useState(true);
+	const [adding, setAdding] = useState(true);
 
 
 	const handleChange = (e) => {
@@ -105,46 +119,46 @@ const Register = (props) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		if (!(data.name && data.password && data.email)) {
-			setError('You must supply a name, email address, and password!');
+		if (!(data.title && data.description)) {
+			setError('You must supply a title and description');
 		} else {
-			register(data, setRegistering, dispatch);
+			addTopNine(data, setAdding, topNineState, dispatch);
 		}
 	};
 
 
-	// if we successfully registered, go to login display
-	if (!registering) {
-		return  (<Redirect to='/login' />);
+	// if we successfully added the item, go to top-nine-list
+	if (!adding) {
+		return  (<Redirect to='/topnine' />);
 	}
 
 	return (
-		<RegisterWrapper>
-			<h3>Register Page</h3>
+		<ATNWrapper>
+			<h3>Add a New Top-Nine Item</h3>
 
 			{error && <div className='error'>{error}</div>}
 			{topNineState.apiMessage && <div className='info'>{topNineState.apiMessage}</div>}
 
 			<form onSubmit={handleSubmit}>
 
-				<label name='name'><span>Name:</span>
-					<input type='text' name='name' placeholder='Name'
-						value={data.name} onChange={handleChange} />
+				<label name='title'><span>Title:</span>
+					<input type='text' name='title' placeholder='Title'
+						value={data.title} onChange={handleChange} />
 				</label>
-				<label name='email'><span>Email:</span>
-					<input type='email' name='email' placeholder='Email'
-						value={data.email} onChange={handleChange} />
+				<label className='desc' name='description'><span className='desc'>Description:</span>
+					<textarea name='description' placeholder='Description'
+						value={data.description} onChange={handleChange} />
 				</label>
-				<label name='password'><span>Password:</span>
-					<input type='password' name='password' placeholder='Password'
-						value={data.password} onChange={handleChange} />
+				<label name='image_url'><span>Image link:</span>
+					<input type='url' name='image_url' placeholder='Link'
+						value={data.image_url} onChange={handleChange} />
 				</label>
 
-				<button type='submit'>Register</button>
+				<button type='submit'>Add</button>
 			</form>
-		</RegisterWrapper>
+		</ATNWrapper>
 	);
 
 };
 
-export default Register;
+export default AddTopNine;

@@ -1,12 +1,16 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { Link, Route } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { topNineReducer, getInitialState } from './reducers/topNineReducer';
+import { topNineReducer, initialState } from './reducers/topNineReducer';
 import { TopNineContext } from './contexts/TopNineContext';
+import { getTopNine } from './utils/api';
 
+import Welcome from './components/Welcome';
 import TopNineList from './components/TopNineList';
+import EditTopNine from './components/EditTopNine';
+import AddTopNine from './components/AddTopNine';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './components/Login';
 import Register from './components/Register';
@@ -49,9 +53,16 @@ const AppWrapper = styled.div`
 
 const App = () => {
 
-	const [topNineState, dispatch] = useReducer(topNineReducer, getInitialState());
+	const [topNineState, dispatch] = useReducer(topNineReducer, initialState);
 
-	const loggedIn = topNineState.loggedIn;
+	const loggedIn = localStorage.getItem('MTN-token');
+
+	// get user info and list of top-nines
+	// if we're not logged in, this will not do anything
+	useEffect(() => {
+		getTopNine(dispatch);
+	}, [dispatch, loggedIn]);
+
 
 	return (
 		<TopNineContext.Provider value={ {topNineState, dispatch} }>
@@ -59,12 +70,16 @@ const App = () => {
 				<div className='nav'>
 					<h3>My Top Nine!</h3>
 					<Link to='/'>Home</Link>
+					{loggedIn && <Link to='/addtopnine'>Add New</Link>}
 					{loggedIn && <Link to='/topnine'>Top Nine</Link>}
 					{!loggedIn && <Link to='/login'>Login</Link>}
 					{!loggedIn && <Link to='/register'>Register</Link>}
 					{loggedIn && <Link to='/logout'>Logout</Link>}
 				</div>
 
+				<Route exact path='/' component={Welcome} />
+				<ProtectedRoute path='/edittopnine/:id' component={EditTopNine} />
+				<ProtectedRoute path='/addtopnine' component={AddTopNine} />
 				<ProtectedRoute path='/topnine' component={TopNineList} />
 				<Route path='/register' component={Register} />
 				<ProtectedRoute path='/logout' component={Logout} />

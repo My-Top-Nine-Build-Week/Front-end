@@ -19,7 +19,7 @@ const ATNWrapper = styled.div`
 		margin: 20px;
 	}
 
-	.error {
+	.message {
 		font-size: 2rem;
 		color: red;
 	}
@@ -97,17 +97,13 @@ const AddTopNine = (props) => {
 
 	const { topNineState, dispatch } = useContext(TopNineContext);
 
-	const [error, setError] = useState();
+	const [message, setMessage] = useState('');
 
 	const [data, setData] = useState({
 		title: '',
 		description: '',
 		image_url: ''
 	});
-
-
-	// so we can tell if the add api call was successful
-	const [added, setAdded] = useState(false);
 
 
 	const handleChange = (e) => {
@@ -119,17 +115,18 @@ const AddTopNine = (props) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		setMessage('');
 
 		if (!(data.title && data.description)) {
-			setError('You must supply a title and description');
+			setMessage('You must supply a title and description');
 		} else {
-			addTopNine(data, setAdded, topNineState, dispatch);
+			addTopNine(data, topNineState, dispatch, setMessage);
 		}
 	};
 
 
 	// if we successfully added the item, go to top-nine-list
-	if (added) {
+	if (message.substring(0, 7) === 'Success') {
 		return  (<Redirect to='/topnine' />);
 	}
 
@@ -137,8 +134,7 @@ const AddTopNine = (props) => {
 		<ATNWrapper>
 			<h3>Add a New Top-Nine Item</h3>
 
-			{error && <div className='error'>{error}</div>}
-			{topNineState.apiMessage && <div className='info'>{topNineState.apiMessage}</div>}
+			<div className='message'>{message}</div>
 
 			<form onSubmit={handleSubmit}>
 

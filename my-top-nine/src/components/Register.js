@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
+import { Redirect } from 'react-router-dom';
 
 import { TopNineContext } from '../contexts/TopNineContext';
 import { register } from '../utils/api';
-import { REGISTER_FAILURE, REGISTER_SUCCESS } from '../reducers/topNineReducer';
 
 
 const RegisterWrapper = styled.div`
@@ -19,7 +19,7 @@ const RegisterWrapper = styled.div`
 		margin: 20px;
 	}
 
-	.error {
+	.message {
 		font-size: 2rem;
 		color: red;
 	}
@@ -81,9 +81,9 @@ const RegisterWrapper = styled.div`
 
 const Register = (props) => {
 
-	const { topNineState, dispatch } = useContext(TopNineContext);
+	const { dispatch } = useContext(TopNineContext);
 
-	const [error, setError] = useState();
+	const [message, setMessage] = useState('');
 
 	const [data, setData] = useState({
 		name: '',
@@ -101,24 +101,27 @@ const Register = (props) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		setError('');
+		setMessage('');
 
 		if (!(data.name && data.password && data.email)) {
-			setError('You must supply a name, email address, and password!');
+			setMessage('You must supply a name, email address, and password!');
 		} else {
-			register(data, dispatch);
+			register(data, dispatch, setMessage);
 		}
 	};
+
+
+	// if we successfully logged in, go to top nine list display
+	if (localStorage.getItem('MTN-token')) {
+		return  (<Redirect to='/topnine' />);
+	}
 
 
 	return (
 		<RegisterWrapper>
 			<h3>Register Page</h3>
 
-			{error && <div className='error'>{error}</div>}
-			{(topNineState.apiAction === REGISTER_SUCCESS) &&
-				<div className='info'>Successfully registered...you can login now</div>}
-			{(topNineState.apiAction === REGISTER_FAILURE) && <div className='info'>{topNineState.apiMessage}</div>}
+			<div className='message'>{message}</div>
 
 			<form onSubmit={handleSubmit}>
 

@@ -19,7 +19,7 @@ const ETNWrapper = styled.div`
 		margin: 20px;
 	}
 
-	.error {
+	.message {
 		font-size: 2rem;
 		color: red;
 	}
@@ -97,9 +97,7 @@ const EditTopNine = (props) => {
 
 	const { topNineState, dispatch } = useContext(TopNineContext);
 
-	const [error, setError] = useState('');
-
-	const [edited, setEdited] = useState(false);
+	const [message, setMessage] = useState('');
 
 	const id = Number.parseInt(props.match.params.id);
 	const oldTopNine = topNineState.topNineList.find(item => item.id === id);
@@ -129,17 +127,18 @@ const EditTopNine = (props) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		setMessage('');
 
 		if (!(data.title && data.description)) {
-			setError('You must supply a title and description');
+			setMessage('You must supply a title and description');
 		} else {
-			editTopNine(id, data, setEdited, topNineState, dispatch);
+			editTopNine(id, data, topNineState, dispatch, setMessage);
 		}
 	};
 
 
 	// if we successfully edited the item, go back to top-nine-list
-	if (edited) {
+	if (message.substring(0, 7) === 'Success') {
 		return  (<Redirect to='/topnine' />);
 	}
 
@@ -147,8 +146,7 @@ const EditTopNine = (props) => {
 		<ETNWrapper>
 			<h3>Edit Top-Nine Item</h3>
 
-			{error && <div className='error'>{error}</div>}
-			{topNineState.apiMessage && <div className='info'>{topNineState.apiMessage}</div>}
+			<div className='message'>{message}</div>
 
 			<form onSubmit={handleSubmit}>
 

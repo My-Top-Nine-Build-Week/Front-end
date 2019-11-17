@@ -38,7 +38,7 @@ export const apiWithAuth = () => {
 
 
 
-export const login = (credentials, dispatch) => {
+export const login = (credentials, dispatch, setMessage) => {
 
 	dispatch({ type: LOGIN_START });
 
@@ -52,20 +52,25 @@ export const login = (credentials, dispatch) => {
 		})
 		.catch(err => {
 			console.log('axios POST /auth/login error:');
-			console.log(err);
+			console.log(err.response);
 
-			let message = err.message;
-			if (message.includes('401')) {
+			const status = err.response.status;
+			const statusText = err.response.statusText;
+			const apiMessage = status.toString() + ': ' + statusText;
+
+			let message = apiMessage;
+			if (status === 401) {
 				message = 'Invalid email/password pair';
 			}
+			setMessage(message);
 
-			dispatch({ type: LOGIN_FAILURE, payload: message });
+			dispatch({ type: LOGIN_FAILURE, payload: apiMessage });
 		});
 };
 
 
 
-export const register = (credentials, dispatch) => {
+export const register = (credentials, dispatch, setMessage) => {
 
 	dispatch({ type: REGISTER_START });
 
@@ -74,13 +79,27 @@ export const register = (credentials, dispatch) => {
 			console.log('axios POST /auth/register response:');
 			console.log(res);
 
+			setMessage('Success!...please wait while we log you in');
 			dispatch({type: REGISTER_SUCCESS});
+
+			// automatically log the user in
+			login(credentials, dispatch, setMessage);
 		})
 		.catch(err => {
 			console.log('axios POST /auth/register error:');
-			console.log(err);
+			console.log(err.response);
 
-			dispatch({ type: REGISTER_FAILURE, payload: err.message });
+			const status = err.response.status;
+			const statusText = err.response.statusText;
+			const apiMessage = status.toString() + ': ' + statusText;
+
+			let message = apiMessage;
+			if (status === 500) {
+				message = 'That email is already in use, please use another';
+			}
+			setMessage(message);
+
+			dispatch({ type: REGISTER_FAILURE, payload: apiMessage });
 		});
 };
 
@@ -102,20 +121,24 @@ export const getTopNine = (dispatch) => {
 		})
 		.catch(err => {
 			console.log('axios GET /home error:');
-			console.log(err);
+			console.log(err.response);
+
+			const status = err.response.status;
+			const statusText = err.response.statusText;
+			const apiMessage = status.toString() + ': ' + statusText;
 
 			// if we have a 401 error, that means our token is expired or invalid
-			if (err.message.includes('401')) {
+			if (status === 401) {
 				localStorage.removeItem('MTN-token');
 				dispatch({ type: LOGOUT });
 			} else {
-				dispatch({ type: LOAD_FAILURE, payload: err.message });
+				dispatch({ type: LOAD_FAILURE, payload: apiMessage });
 			}
 		});
 };
 
 
-export const addTopNine = (topNine, setAdded, topNineState, dispatch) => {
+export const addTopNine = (topNine, topNineState, dispatch, setMessage) => {
 
 	dispatch({ type: ADD_START });
 
@@ -124,30 +147,35 @@ export const addTopNine = (topNine, setAdded, topNineState, dispatch) => {
 			console.log(`axios POST /home/add-top-nine response:`);
 			console.log(res);
 
-			// the response is just a success message with the new id
-			// we will update the top-nine list ourselves
-			setAdded(true);
+			// let the caller know we succeeded
+			setMessage('Success');
 
+			// the response is just a success message with the new id - we need to update the top-nine list
 			const newTopNineList =
 				topNineState.topNineList.concat([{...topNine, id: res.data.id, user_id: topNineState.user_id}]);
 			dispatch({type: ADD_SUCCESS, payload: newTopNineList});
 		})
 		.catch(err => {
 			console.log(`axios POST /home/add-top-nine error:`);
-			console.log(err);
+			console.log(err.response);
+
+			const status = err.response.status;
+			const statusText = err.response.statusText;
+			const apiMessage = status.toString() + ': ' + statusText;
 
 			// if we have a 401 error, that means our token is expired or invalid
-			if (err.message.includes('401')) {
+			if (status === 401) {
 				localStorage.removeItem('MTN-token');
 				dispatch({ type: LOGOUT });
 			} else {
-				dispatch({ type: ADD_FAILURE, payload: err.message });
+				setMessage(apiMessage);
+				dispatch({ type: ADD_FAILURE, payload: apiMessage });
 			}
 		});
 };
 
 
-export const editTopNine = (id, topNine, editSetter, topNineState, dispatch) => {
+export const editTopNine = (id, topNine, topNineState, dispatch, setMessage) => {
 
 	dispatch({ type: EDIT_START });
 
@@ -164,19 +192,24 @@ export const editTopNine = (id, topNine, editSetter, topNineState, dispatch) => 
 			const backTopNineList = topNineState.topNineList.slice(updatedIndex + 1);
 			const newTopNineList = frontTopNineList.concat([updatedTopNine]).concat(backTopNineList);
 
-			editSetter(true);
+			setMessage('Success');
 			dispatch({type: EDIT_SUCCESS, payload: newTopNineList});
 		})
 		.catch(err => {
-			console.log(`axios POST /home/add-top-nine error:`);
-			console.log(err);
+			console.log(`axios PUT /home/${id}/edit-top-nine error:`);
+			console.log(err.response);
+
+			const status = err.response.status;
+			const statusText = err.response.statusText;
+			const apiMessage = status.toString() + ': ' + statusText;
 
 			// if we have a 401 error, that means our token is expired or invalid
-			if (err.message.includes('401')) {
+			if (status === 401) {
 				localStorage.removeItem('MTN-token');
 				dispatch({ type: LOGOUT });
 			} else {
-				dispatch({ type: EDIT_FAILURE, payload: err.message });
+				setMessage(apiMessage);
+				dispatch({ type: EDIT_FAILURE, payload: apiMessage });
 			}
 		});
 };
@@ -198,14 +231,18 @@ export const deleteTopNine = (id, topNineState, dispatch) => {
 		})
 		.catch(err => {
 			console.log(`axios DELETE /home/${id}/delete-top-nine error:`);
-			console.log(err);
+			console.log(err.response);
+
+			const status = err.response.status;
+			const statusText = err.response.statusText;
+			const apiMessage = status.toString() + ': ' + statusText;
 
 			// if we have a 401 error, that means our token is expired or invalid
-			if (err.message.includes('401')) {
+			if (status === 401) {
 				localStorage.removeItem('MTN-token');
 				dispatch({ type: LOGOUT });
 			} else {
-				dispatch({ type: DELETE_FAILURE, payload: err.message });
+				dispatch({ type: DELETE_FAILURE, payload: apiMessage });
 			}
 		});
 };

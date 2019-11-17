@@ -4,7 +4,6 @@ import { Redirect } from 'react-router-dom';
 
 import { TopNineContext } from '../contexts/TopNineContext';
 import { login } from '../utils/api';
-import { LOGIN_FAILURE } from '../reducers/topNineReducer';
 
 
 const LoginWrapper = styled.div`
@@ -20,7 +19,7 @@ const LoginWrapper = styled.div`
 		margin: 20px;
 	}
 
-	.error {
+	.message {
 		font-size: 2rem;
 		color: red;
 	}
@@ -81,9 +80,9 @@ const LoginWrapper = styled.div`
 
 const Login = (props) => {
 
-	const { topNineState, dispatch } = useContext(TopNineContext);
+	const { dispatch } = useContext(TopNineContext);
 
-	const [error, setError] = useState();
+	const [message, setMessage] = useState('');
 
 	const [data, setData] = useState({
 		email: '',
@@ -100,12 +99,13 @@ const Login = (props) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		setMessage('');
 
 		if (!(data.password && data.email)) {
-			setError('You must supply an email address and password!');
+			setMessage('You must supply an email address and password!');
 		} else {
-			setError('');
-			login(data, dispatch);
+			setMessage('');
+			login(data, dispatch, setMessage);
 		}
 	};
 
@@ -119,8 +119,7 @@ const Login = (props) => {
 		<LoginWrapper>
 			<h3>Login Page</h3>
 
-			{error && <div className='error'>{error}</div>}
-			{(topNineState.apiAction === LOGIN_FAILURE) && <div className='info'>{topNineState.apiMessage}</div>}
+			<div className='message'>{message}</div>
 
 			<form onSubmit={handleSubmit}>
 

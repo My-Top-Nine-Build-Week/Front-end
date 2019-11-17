@@ -9,6 +9,7 @@ import { getTopNine } from './utils/api';
 
 import Welcome from './components/Welcome';
 import TopNineList from './components/TopNineList';
+import EditTopNine from './components/EditTopNine';
 import AddTopNine from './components/AddTopNine';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './components/Login';
@@ -69,6 +70,7 @@ const App = () => {
 				<div className='nav'>
 					<h3>My Top Nine!</h3>
 					<Link to='/'>Home</Link>
+					{loggedIn && <Link to='/addtopnine'>Add New</Link>}
 					{loggedIn && <Link to='/topnine'>Top Nine</Link>}
 					{!loggedIn && <Link to='/login'>Login</Link>}
 					{!loggedIn && <Link to='/register'>Register</Link>}
@@ -76,6 +78,7 @@ const App = () => {
 				</div>
 
 				<Route exact path='/' component={Welcome} />
+				<ProtectedRoute path='/edittopnine/:id' component={EditTopNine} />
 				<ProtectedRoute path='/addtopnine' component={AddTopNine} />
 				<ProtectedRoute path='/topnine' component={TopNineList} />
 				<Route path='/register' component={Register} />

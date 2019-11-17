@@ -1,12 +1,12 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
 import { TopNineContext } from '../contexts/TopNineContext';
 
-import { addTopNine } from '../utils/api';
+import { editTopNine } from '../utils/api';
 
 
-const ATNWrapper = styled.div`
+const ETNWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -93,9 +93,9 @@ const ATNWrapper = styled.div`
 `;
 
 
-const AddTopNine = (props) => {
+const EditTopNine = (props) => {
 
-	// dispatcher for addTopNine function
+	// dispatcher for editTopNine function
 	const { topNineState, dispatch } = useContext(TopNineContext);
 
 	const [error, setError] = useState();
@@ -103,10 +103,40 @@ const AddTopNine = (props) => {
 	const [data, setData] = useState({
 		title: '',
 		description: '',
-		image_url: ''
+		image_url: ''		
 	});
 
-	const [adding, setAdding] = useState(true);
+	const [editing, setEditing] = useState(true);
+
+
+	console.log('in EditTopNine');
+	console.log(props);
+
+	const id = Number.parseInt(props.match.params.id);
+
+	console.log(id);
+	console.log(topNineState.topNineList);
+
+
+	const oldTopNine = topNineState.topNineList.find(item => item.id === id);
+
+	/*
+	if (oldTopNine) {
+		setData({
+			title: oldTopNine.title,
+			description: oldTopNine.description,
+			image_url: oldTopNine.image_url		
+		});
+	}
+
+	console.log(data);
+
+	// did we get a valid top nine to edit?
+	// if not, go back to top-nine-list
+	if (oldTopNine === undefined) {
+		return  (<Redirect to='/topnine' />);
+	}
+	*/
 
 
 	const handleChange = (e) => {
@@ -122,19 +152,19 @@ const AddTopNine = (props) => {
 		if (!(data.title && data.description)) {
 			setError('You must supply a title and description');
 		} else {
-			addTopNine(data, setAdding, topNineState, dispatch);
+			editTopNine(data, setEditing, topNineState, dispatch);
 		}
 	};
 
 
-	// if we successfully added the item, go to top-nine-list
-	if (!adding) {
+	// if we successfully edited the item, go back to top-nine-list
+	if (!editing) {
 		return  (<Redirect to='/topnine' />);
 	}
 
 	return (
-		<ATNWrapper>
-			<h3>Add a New Top-Nine Item</h3>
+		<ETNWrapper>
+			<h3>Edit Top-Nine Item</h3>
 
 			{error && <div className='error'>{error}</div>}
 			{topNineState.apiMessage && <div className='info'>{topNineState.apiMessage}</div>}
@@ -154,11 +184,11 @@ const AddTopNine = (props) => {
 						value={data.image_url} onChange={handleChange} />
 				</label>
 
-				<button type='submit'>Add</button>
+				<button type='submit'>Submit</button>
 			</form>
-		</ATNWrapper>
+		</ETNWrapper>
 	);
 
 };
 
-export default AddTopNine;
+export default EditTopNine;

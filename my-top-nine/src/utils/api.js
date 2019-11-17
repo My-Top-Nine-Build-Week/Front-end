@@ -155,7 +155,7 @@ export const addTopNine = (topNine, setAdding, topNineState, dispatch) => {
 };
 
 
-export const updateTopNine = (id, topNine, topNineState, dispatch) => {
+export const editTopNine = (id, topNine, topNineState, dispatch) => {
 
 	dispatch({ type: EDIT_START });
 

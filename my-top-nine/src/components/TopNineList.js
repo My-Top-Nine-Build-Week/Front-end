@@ -36,18 +36,32 @@ const TNLWrapper = styled.div`
 			font-size: 1.4rem;
 			font-style: italic;
 		}
-	}
 
+		.button-bar {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
+			width: 100%;
+			margin-top: 10px;
+		}
+	}
 
 `;
 
 
-const TopNineList = () => {
+const TopNineList = (props) => {
 
 	const { topNineState } = useContext(TopNineContext);
 
-	console.log('in TopNineList');
-	console.log(topNineState);
+	const handleEdit = (e, item) => {
+		props.history.push(`/edittopnine/${item.id}`);
+	};
+
+
+	const handleDelete = (e, item) => {
+		props.history.push(`/confirmdelete/${item.id}`);
+	};
+
 
 	return (
 		<TNLWrapper>
@@ -58,6 +72,10 @@ const TopNineList = () => {
 						<p>{item.title}</p>
 						<p>Description: {item.description}</p>
 						<img src={item.image_url} alt={item.title} />
+						<div className='button-bar'>
+							<button onClick={e => handleEdit(e, item)}>Edit</button>
+							<button onClick={e => handleDelete(e, item)}>Delete</button>
+						</div>
 					</div>
 				);
 			})}

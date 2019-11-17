@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
-import { TopNineContext } from '../contexts/TopNineContext';
 
+import { TopNineContext } from '../contexts/TopNineContext';
 import { addTopNine } from '../utils/api';
 
 
@@ -95,7 +95,6 @@ const ATNWrapper = styled.div`
 
 const AddTopNine = (props) => {
 
-	// dispatcher for addTopNine function
 	const { topNineState, dispatch } = useContext(TopNineContext);
 
 	const [error, setError] = useState();
@@ -106,7 +105,9 @@ const AddTopNine = (props) => {
 		image_url: ''
 	});
 
-	const [adding, setAdding] = useState(true);
+
+	// so we can tell if the add api call was successful
+	const [added, setAdded] = useState(false);
 
 
 	const handleChange = (e) => {
@@ -122,13 +123,13 @@ const AddTopNine = (props) => {
 		if (!(data.title && data.description)) {
 			setError('You must supply a title and description');
 		} else {
-			addTopNine(data, setAdding, topNineState, dispatch);
+			addTopNine(data, setAdded, topNineState, dispatch);
 		}
 	};
 
 
 	// if we successfully added the item, go to top-nine-list
-	if (!adding) {
+	if (added) {
 		return  (<Redirect to='/topnine' />);
 	}
 
@@ -150,7 +151,7 @@ const AddTopNine = (props) => {
 						value={data.description} onChange={handleChange} />
 				</label>
 				<label name='image_url'><span>Image link:</span>
-					<input type='url' name='image_url' placeholder='Link'
+					<input type='text' name='image_url' placeholder='Link'
 						value={data.image_url} onChange={handleChange} />
 				</label>
 

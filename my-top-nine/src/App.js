@@ -11,6 +11,7 @@ import Welcome from './components/Welcome';
 import TopNineList from './components/TopNineList';
 import EditTopNine from './components/EditTopNine';
 import AddTopNine from './components/AddTopNine';
+import ConfirmDelete from './components/ConfirmDelete';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './components/Login';
 import Register from './components/Register';
@@ -79,6 +80,7 @@ const App = () => {
 
 				<Route exact path='/' component={Welcome} />
 				<ProtectedRoute path='/edittopnine/:id' component={EditTopNine} />
+				<ProtectedRoute path='/confirmdelete/:id' component={ConfirmDelete} />
 				<ProtectedRoute path='/addtopnine' component={AddTopNine} />
 				<ProtectedRoute path='/topnine' component={TopNineList} />
 				<Route path='/register' component={Register} />

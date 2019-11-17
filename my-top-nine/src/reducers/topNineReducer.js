@@ -13,6 +13,8 @@ export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
 export const LOGOUT = 'LOGOUT';
 
+export const RESET_API = 'RESET_API';
+
 export const LOAD_START = 'LOAD_START';
 export const LOAD_SUCCESS = 'LOAD_SUCCESS';
 export const LOAD_FAILURE = 'LOAD_FAILURE';
@@ -44,8 +46,9 @@ export const EDIT_FAILURE = 'EDIT_FAILURE';
 
 
 // what state should look like when we're logged out
+// Note: apiAction will always hold the most recent reducer action type
+// apiMessage will hold the error message if the last action type was a FAILURE type
 export const initialState = {
-	apiInProgress: false,
 	apiMessage: '',
 	apiAction: '',
 	name: '',
@@ -61,75 +64,75 @@ export const initialState = {
 export const topNineReducer = (state, action) => {
 	switch (action.type) {
 		case REGISTER_START:
-			return {...state, apiInProgress: true, apiAction: action.type, apiMessage: ''};
+			return {...state, apiAction: action.type, apiMessage: ''};
 
 		case REGISTER_SUCCESS:
-			return {...state, apiInProgress: false, apiAction: '',
-					apiMessage: 'Registration successful! You can log in now'};
+			return {...state, apiAction: action.type, apiMessage: ''};
 
 		case REGISTER_FAILURE:
-			return {...state, apiInProgress: false, apiAction: '', apiMessage: action.payload};
+			return {...state, apiAction: action.type, apiMessage: action.payload};
 
 
 		case LOGOUT:
 			return {...state, ...initialState};
 
 
+		case RESET_API:
+			return {...state, apiAction: '', apiMessage: ''};
+
+
 		case LOGIN_START:
-			return {...state, apiInProgress: true, apiAction: action.type, apiMessage: ''};
+			return {...state, apiAction: action.type, apiMessage: ''};
 
 		case LOGIN_SUCCESS:
-			return {...state, apiInProgress: false, apiAction: '', apiMessage: ''};
+			return {...state, apiAction: action.type, apiMessage: ''};
 
 		case LOGIN_FAILURE:
-			return {...state, apiInProgress: false, apiAction: '', apiMessage: action.payload};
+			return {...state, apiAction: action.type, apiMessage: action.payload};
 
 
 		case LOAD_START:
-			return {...state, apiInProgress: true, apiAction: action.type, apiMessage: ''};
+			return {...state, apiAction: action.type, apiMessage: ''};
 
 		case LOAD_SUCCESS:
-			console.log('in reducer LOAD_SUCCESS');
-			console.log(action.payload);
-
-			return {...state, apiInProgress: false, apiAction: '', apiMessage: '',
+			return {...state, apiAction: action.type, apiMessage: '',
 					name: action.payload.name,
 					email: action.payload.email,
 					user_id: action.payload.id,
 					topNineList: action.payload.topNine};
 
 		case LOAD_FAILURE:
-			return {...state, apiInProgress: false, apiAction: '', apiMessage: action.payload};
+			return {...state, apiAction: action.type, apiMessage: action.payload};
 
 
 		case ADD_START:
-			return {...state, apiInProgress: true, apiAction: action.type, apiMessage: ''};
+			return {...state, apiAction: action.type, apiMessage: ''};
 
 		case ADD_SUCCESS:
-			return {...state, apiInProgress: false, apiAction: '', apiMessage: '', topNineList: action.payload};
+			return {...state, apiAction: action.type, apiMessage: '', topNineList: action.payload};
 
 		case ADD_FAILURE:
-			return {...state, apiInProgress: false, apiAction: '', apiMessage: action.payload};
+			return {...state, apiAction: action.type, apiMessage: action.payload};
 
 
 		case DELETE_START:
-			return {...state, apiInProgress: true, apiAction: action.type, apiMessage: ''};
+			return {...state, apiAction: action.type, apiMessage: ''};
 
 		case DELETE_SUCCESS:
-			return {...state, apiInProgress: false, apiAction: '', apiMessage: '', topNineList: action.payload};
+			return {...state, apiAction: action.type, apiMessage: '', topNineList: action.payload};
 
 		case DELETE_FAILURE:
-			return {...state, apiInProgress: false, apiAction: '', apiMessage: action.payload};
+			return {...state, apiAction: action.type, apiMessage: action.payload};
 
 
 		case EDIT_START:
-			return {...state, apiInProgress: true, apiAction: action.type, apiMessage: ''};
+			return {...state, apiAction: action.type, apiMessage: ''};
 
 		case EDIT_SUCCESS:
-			return {...state, apiInProgress: false, apiAction: '', apiMessage: '', topNineList: action.payload};
+			return {...state, apiAction: action.type, apiMessage: '', topNineList: action.payload};
 
 		case EDIT_FAILURE:
-			return {...state, apiInProgress: false, apiAction: '', apiMessage: action.payload};
+			return {...state, apiAction: action.type, apiMessage: action.payload};
 
 
 		default:

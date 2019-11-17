@@ -40,9 +40,6 @@ export const apiWithAuth = () => {
 
 export const login = (credentials, dispatch) => {
 
-	console.log('inside login');
-	console.log(credentials);
-
 	dispatch({ type: LOGIN_START });
 
 	axios.post(`${baseURL}/auth/login`, credentials)
@@ -68,7 +65,7 @@ export const login = (credentials, dispatch) => {
 
 
 
-export const register = (credentials, registerSetter, dispatch) => {
+export const register = (credentials, dispatch) => {
 
 	dispatch({ type: REGISTER_START });
 
@@ -77,7 +74,6 @@ export const register = (credentials, registerSetter, dispatch) => {
 			console.log('axios POST /auth/register response:');
 			console.log(res);
 
-			registerSetter(false);
 			dispatch({type: REGISTER_SUCCESS});
 		})
 		.catch(err => {
@@ -119,13 +115,9 @@ export const getTopNine = (dispatch) => {
 };
 
 
-export const addTopNine = (topNine, setAdding, topNineState, dispatch) => {
+export const addTopNine = (topNine, setAdded, topNineState, dispatch) => {
 
 	dispatch({ type: ADD_START });
-
-	console.log('in addTopNine');
-	console.log(topNine);
-	console.log(topNineState);
 
 	apiWithAuth().post('/home/add-top-nine', topNine)
 		.then(res => {
@@ -134,7 +126,7 @@ export const addTopNine = (topNine, setAdding, topNineState, dispatch) => {
 
 			// the response is just a success message with the new id
 			// we will update the top-nine list ourselves
-			setAdding(false);
+			setAdded(true);
 
 			const newTopNineList =
 				topNineState.topNineList.concat([{...topNine, id: res.data.id, user_id: topNineState.user_id}]);
@@ -155,7 +147,7 @@ export const addTopNine = (topNine, setAdding, topNineState, dispatch) => {
 };
 
 
-export const editTopNine = (id, topNine, topNineState, dispatch) => {
+export const editTopNine = (id, topNine, editSetter, topNineState, dispatch) => {
 
 	dispatch({ type: EDIT_START });
 
@@ -172,6 +164,7 @@ export const editTopNine = (id, topNine, topNineState, dispatch) => {
 			const backTopNineList = topNineState.topNineList.slice(updatedIndex + 1);
 			const newTopNineList = frontTopNineList.concat([updatedTopNine]).concat(backTopNineList);
 
+			editSetter(true);
 			dispatch({type: EDIT_SUCCESS, payload: newTopNineList});
 		})
 		.catch(err => {

@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 
 import { TopNineContext } from '../contexts/TopNineContext';
 import { login } from '../utils/api';
+import { LOGIN_FAILURE } from '../reducers/topNineReducer';
 
 
 const LoginWrapper = styled.div`
@@ -80,7 +81,6 @@ const LoginWrapper = styled.div`
 
 const Login = (props) => {
 
-	// dispatcher for login function
 	const { topNineState, dispatch } = useContext(TopNineContext);
 
 	const [error, setError] = useState();
@@ -104,9 +104,6 @@ const Login = (props) => {
 		if (!(data.password && data.email)) {
 			setError('You must supply an email address and password!');
 		} else {
-			console.log('calling login with data:');
-			console.log(data);
-
 			setError('');
 			login(data, dispatch);
 		}
@@ -123,12 +120,12 @@ const Login = (props) => {
 			<h3>Login Page</h3>
 
 			{error && <div className='error'>{error}</div>}
-			{topNineState.apiMessage && <div className='info'>{topNineState.apiMessage}</div>}
+			{(topNineState.apiAction === LOGIN_FAILURE) && <div className='info'>{topNineState.apiMessage}</div>}
 
 			<form onSubmit={handleSubmit}>
 
 				<label name='email'><span>Email:</span>
-					<input type='email' name='email' placeholder='Email'
+					<input type='text' name='email' placeholder='Email'
 						value={data.email} onChange={handleChange} />
 				</label>
 				<label name='password'><span>Password:</span>

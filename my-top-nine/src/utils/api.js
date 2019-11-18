@@ -19,7 +19,10 @@ import {
 	DELETE_FAILURE,
 	EDIT_START,
 	EDIT_SUCCESS,
-	EDIT_FAILURE
+	EDIT_FAILURE,
+	GET_USERS_START,
+	GET_USERS_SUCCESS,
+	GET_USERS_FAILURE
 } from '../reducers/topNineReducer';
 
 
@@ -243,6 +246,69 @@ export const deleteTopNine = (id, topNineState, dispatch) => {
 				dispatch({ type: LOGOUT });
 			} else {
 				dispatch({ type: DELETE_FAILURE, payload: apiMessage });
+			}
+		});
+};
+
+
+export const getUsers = (dispatch) => {
+
+	dispatch({ type: GET_USERS_START });
+
+	apiWithAuth().get('/users')
+		.then(res => {
+			console.log('axios GET /users response:');
+			console.log(res);
+
+			dispatch({type: GET_USERS_SUCCESS, payload: res.data});
+		})
+		.catch(err => {
+			console.log('axios GET /users error:');
+			console.log(err.response);
+
+			const status = err.response.status;
+			const statusText = err.response.statusText;
+			const apiMessage = status.toString() + ': ' + statusText;
+
+			// if we have a 401 error, that means our token is expired or invalid
+			if (status === 401) {
+				localStorage.removeItem('MTN-token');
+				dispatch({ type: LOGOUT });
+			} else {
+				dispatch({ type: GET_USERS_FAILURE, payload: apiMessage });
+			}
+		});
+};
+
+
+export const getUserTopNines = (user_id, setter, dispatch) => {
+
+	// a different user's top-nine list will be stored in
+	// local state, so dispatch is only used in an error condition
+
+	// if we have an invalid user_id, just return an empty array
+	if (user_id < 0) {
+		setter([]);
+		return;
+	}
+
+	apiWithAuth().get(`/users/${user_id}/top-nine`)
+		.then(res => {
+			console.log(`axios GET /users/${user_id}/top-nine response:`);
+			console.log(res);
+
+			setter(res.data);
+		})
+		.catch(err => {
+			console.log(`axios GET /users/${user_id}/top-nine error:`);
+			console.log(err.response);
+
+			const status = err.response.status;
+
+			// if we have a 401 error, that means our token is expired or invalid
+			if (status === 401) {
+				localStorage.removeItem('MTN-token');
+				dispatch({ type: LOGOUT });
 			}
 		});
 };

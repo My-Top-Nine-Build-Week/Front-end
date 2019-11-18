@@ -19,6 +19,8 @@ import TopNineList from './components/TopNineList_';
 import EditTopNine from './components/EditTopNine_';
 import AddTopNine from './components/AddTopNine_';
 import ConfirmDelete from './components/ConfirmDelete_';
+import UserList from './components/UserList_';
+import UserTopNines from './components/UserTopNines_';
 
 
 const AppWrapper = styled.div`
@@ -77,6 +79,7 @@ const App = () => {
 					<Link to='/'>Home</Link>
 					{loggedIn && <Link to='/addtopnine'>Add New</Link>}
 					{loggedIn && <Link to='/topnine'>Top Nine</Link>}
+					{loggedIn && <Link to='/users'>Show Users</Link>}
 					{!loggedIn && <Link to='/login'>Login</Link>}
 					{!loggedIn && <Link to='/register'>Register</Link>}
 					{loggedIn && <Link to='/logout'>Logout</Link>}
@@ -91,6 +94,9 @@ const App = () => {
 				<ProtectedRoute path='/addtopnine' component={AddTopNine} />
 				<ProtectedRoute path='/edittopnine/:id' component={EditTopNine} />
 				<ProtectedRoute path='/confirmdelete/:id' component={ConfirmDelete} />
+
+				<ProtectedRoute path='/users' component={UserList} />
+				<ProtectedRoute path='/usertopnine/:id' component={UserTopNines} />
 			</AppWrapper>
 		</TopNineContext.Provider>
 	);

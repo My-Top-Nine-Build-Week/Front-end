@@ -31,6 +31,10 @@ export const EDIT_START = 'EDIT_START';
 export const EDIT_SUCCESS = 'EDIT_SUCCESS';
 export const EDIT_FAILURE = 'EDIT_FAILURE';
 
+export const GET_USERS_START = 'GET_USERS_START';
+export const GET_USERS_SUCCESS = 'GET_USERS_SUCCESS';
+export const GET_USERS_FAILURE = 'GET_USERS_FAILURE';
+
 
 
 // This is our 'contract' for maintaining state:
@@ -54,7 +58,8 @@ export const initialState = {
 	name: '',
 	email: '',
 	user_id: null,
-	topNineList: []
+	topNineList: [],
+	userList: []
 };
 
 
@@ -132,6 +137,16 @@ export const topNineReducer = (state, action) => {
 			return {...state, apiAction: action.type, apiMessage: '', topNineList: action.payload};
 
 		case EDIT_FAILURE:
+			return {...state, apiAction: action.type, apiMessage: action.payload};
+
+
+		case GET_USERS_START:
+			return {...state, apiAction: action.type, apiMessage: ''};
+
+		case GET_USERS_SUCCESS:
+			return {...state, apiAction: action.type, apiMessage: '', userList: action.payload};
+
+		case GET_USERS_FAILURE:
 			return {...state, apiAction: action.type, apiMessage: action.payload};
 
 

@@ -7,15 +7,20 @@ import { topNineReducer, initialState } from './reducers/topNineReducer';
 import { TopNineContext } from './contexts/TopNineContext';
 import { getTopNine } from './utils/api';
 
-import Welcome from './components/Welcome';
-import TopNineList from './components/TopNineList';
-import EditTopNine from './components/EditTopNine';
-import AddTopNine from './components/AddTopNine';
-import ConfirmDelete from './components/ConfirmDelete';
 import ProtectedRoute from './components/ProtectedRoute';
-import Login from './components/Login';
-import Register from './components/Register';
 import Logout from './components/Logout';
+
+// Components with an underscore at the end are 'placeholder's --
+// they are functional but may be replaced with fancier versions
+import Login from './components/Login_';
+import Register from './components/Register_';
+import Welcome from './components/Welcome_';
+import TopNineList from './components/TopNineList_';
+import EditTopNine from './components/EditTopNine_';
+import AddTopNine from './components/AddTopNine_';
+import ConfirmDelete from './components/ConfirmDelete_';
+import UserList from './components/UserList_';
+import UserTopNines from './components/UserTopNines_';
 
 
 const AppWrapper = styled.div`
@@ -33,7 +38,7 @@ const AppWrapper = styled.div`
 		background-color: lightgrey;
 
 		h3 {
-			font-size: 3.4rem;
+			font-size: 3rem;
 			font-weight: bold;
 			margin: 10px;
 		}
@@ -68,24 +73,30 @@ const App = () => {
 	return (
 		<TopNineContext.Provider value={ {topNineState, dispatch} }>
 			<AppWrapper>
+
 				<div className='nav'>
 					<h3>My Top Nine!</h3>
 					<Link to='/'>Home</Link>
 					{loggedIn && <Link to='/addtopnine'>Add New</Link>}
 					{loggedIn && <Link to='/topnine'>Top Nine</Link>}
+					{loggedIn && <Link to='/users'>Show Users</Link>}
 					{!loggedIn && <Link to='/login'>Login</Link>}
 					{!loggedIn && <Link to='/register'>Register</Link>}
 					{loggedIn && <Link to='/logout'>Logout</Link>}
 				</div>
 
 				<Route exact path='/' component={Welcome} />
+				<Route path='/register' component={Register} />
+				<Route path='/login' component={Login} />
+				<ProtectedRoute path='/logout' component={Logout} />
+
+				<ProtectedRoute path='/topnine' component={TopNineList} />
+				<ProtectedRoute path='/addtopnine' component={AddTopNine} />
 				<ProtectedRoute path='/edittopnine/:id' component={EditTopNine} />
 				<ProtectedRoute path='/confirmdelete/:id' component={ConfirmDelete} />
-				<ProtectedRoute path='/addtopnine' component={AddTopNine} />
-				<ProtectedRoute path='/topnine' component={TopNineList} />
-				<Route path='/register' component={Register} />
-				<ProtectedRoute path='/logout' component={Logout} />
-				<Route path='/login' component={Login} />
+
+				<ProtectedRoute path='/users' component={UserList} />
+				<ProtectedRoute path='/usertopnine/:id' component={UserTopNines} />
 			</AppWrapper>
 		</TopNineContext.Provider>
 	);

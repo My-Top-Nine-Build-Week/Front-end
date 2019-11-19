@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
+
 import { TopNineContext } from '../contexts/TopNineContext';
+import { login } from '../utils/api';
 
-import { register } from '../utils/api';
 
-
-const RegisterWrapper = styled.div`
+const LoginWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -19,7 +19,12 @@ const RegisterWrapper = styled.div`
 		margin: 20px;
 	}
 
-	.error {
+	.message {
+		font-size: 2rem;
+		color: red;
+	}
+
+	.info {
 		font-size: 2rem;
 		color: red;
 	}
@@ -73,15 +78,13 @@ const RegisterWrapper = styled.div`
 `;
 
 
-const Register = (props) => {
+const Login = (props) => {
 
-	// dispatcher for register function
-	const { topNineState, dispatch } = useContext(TopNineContext);
+	const { dispatch } = useContext(TopNineContext);
 
-	const [error, setError] = useState();
+	const [message, setMessage] = useState('');
 
 	const [data, setData] = useState({
-		name: '',
 		email: '',
 		password: ''
 	});
@@ -96,36 +99,32 @@ const Register = (props) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		setMessage('');
 
-		if (!(data.name && data.password && data.email)) {
-			setError('You must supply a name, email address, and password!');
+		if (!(data.password && data.email)) {
+			setMessage('You must supply an email address and password!');
 		} else {
-			register(data, setError, dispatch);
+			setMessage('');
+			login(data, dispatch, setMessage);
 		}
 	};
 
 
-	// if we successfully registered, go to login display
-	/*
-	if ( topNineState.apiError === '' && topNineState.apiInProgress === false) {
-		return  (<Redirect to='/login' />);
+	// if we successfully logged in, go to top nine list display
+	if (localStorage.getItem('MTN-token')) {
+		return  (<Redirect to='/topnine' />);
 	}
-	*/
 
 	return (
-		<RegisterWrapper>
-			<h3>Register Page</h3>
+		<LoginWrapper>
+			<h3>Login Page</h3>
 
-			{error && <div className='error'>{error}</div>}
+			<div className='message'>{message}</div>
 
 			<form onSubmit={handleSubmit}>
 
-				<label name='name'><span>Name:</span>
-					<input type='text' name='name' placeholder='Name'
-						value={data.name} onChange={handleChange} />
-				</label>
 				<label name='email'><span>Email:</span>
-					<input type='email' name='email' placeholder='Email'
+					<input type='text' name='email' placeholder='Email'
 						value={data.email} onChange={handleChange} />
 				</label>
 				<label name='password'><span>Password:</span>
@@ -133,11 +132,11 @@ const Register = (props) => {
 						value={data.password} onChange={handleChange} />
 				</label>
 
-				<button type='submit'>Register</button>
+				<button type='submit'>Log In</button>
 			</form>
-		</RegisterWrapper>
+		</LoginWrapper>
 	);
 
 };
 
-export default Register;
+export default Login;

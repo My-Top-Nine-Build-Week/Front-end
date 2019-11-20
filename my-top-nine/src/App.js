@@ -15,7 +15,7 @@ import Logout from "./components/Logout";
 import Login from "./components/Login_";
 import Register from "./components/Register_";
 import Welcome from "./components/Welcome_";
-import TopNineList from "./components/TopNineList_";
+import TopNineList from "./components/TopNineList";
 import EditTopNine from "./components/EditTopNine_";
 import AddTopNine from "./components/AddTopNine_";
 import ConfirmDelete from "./components/ConfirmDelete_";
@@ -34,7 +34,7 @@ const AppWrapper = styled.div`
     justify-content: space-around;
     width: 100%;
     height: 80px;
-    background-color: lightgrey;
+    background-color: #ff4040;
 
     h3 {
       font-size: 3rem;
@@ -45,7 +45,7 @@ const AppWrapper = styled.div`
     a {
       font-size: 1.8rem;
       text-decoration: none;
-      color: #333;
+      color: #fff;
 
       &:hover {
         font-weight: bold;
@@ -70,7 +70,7 @@ const App = () => {
     <TopNineContext.Provider value={{ topNineState, dispatch }}>
       <AppWrapper>
         <div className='nav'>
-          <h3>My Top Nine!</h3>
+          <img src={require("./images/tn.png")} alt='Logo' />
           <Link to='/'>Home</Link>
           {loggedIn && <Link to='/addtopnine'>Add New</Link>}
           {loggedIn && <Link to='/topnine'>Top Nine</Link>}

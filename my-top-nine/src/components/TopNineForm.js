@@ -1,14 +1,10 @@
-import React, { useState } from "react";
-import {
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
-  Modal,
-  ModalBody
-} from "reactstrap";
+import React, { useState, useContext } from "react";
+import { Redirect } from "react-router-dom";
+
+import { TopNineContext } from "../contexts/TopNineContext";
+import { addTopNine } from "../utils/api";
+
+import { Button, Modal, ModalBody } from "reactstrap";
 
 import styled from "styled-components";
 
@@ -22,36 +18,42 @@ const FormWrapper = styled.div`
 `;
 
 const TopNineForm = props => {
-  const [formInput, setFormInput] = useState({
+  const { topNineState, dispatch } = useContext(TopNineContext);
+
+  const [message, setMessage] = useState("");
+
+  const [data, setData] = useState({
     title: "",
     description: "",
     image_url: ""
   });
 
-  const onsubmit = event => {
-    event.preventDefault();
-    const addItem = {
-      ...formInput
-    };
-
-    props.newItem(addItem);
-    // teamMembers.push(formInput);
-    console.log(addItem);
-    setFormInput({
-      title: "",
-      description: "",
-      image_url: ""
-    });
-  };
-
-  const onchange = event => {
-    setFormInput({
-      ...formInput,
-      [event.target.name]: event.target.value
-    });
-  };
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
+
+  const handleChange = e => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    setMessage("");
+
+    if (!(data.title && data.description)) {
+      setMessage("You must supply a title and description");
+    } else {
+      addTopNine(data, topNineState, dispatch, setMessage);
+    }
+  };
+
+  // if we successfully added the item, go to top-nine-list
+  if (message.substring(0, 7) === "Success") {
+    return <Redirect to='/topnine' />;
+  }
+
   return (
     <div className='form-btn'>
       {" "}
@@ -60,42 +62,45 @@ const TopNineForm = props => {
       </Button>
       <Modal isOpen={modal} toggle={toggle}>
         <ModalBody>
+          <div className='message'>{message}</div>
           <FormWrapper>
-            <Form onSubmit={onsubmit}>
-              <FormGroup>
-                <Label for='title'>Title</Label>
-                <Input
+            <h3>Add a New Top-Nine Item</h3>
+
+            <div className='message'>{message}</div>
+
+            <form onSubmit={handleSubmit}>
+              <label name='title'>
+                <span>Title:</span>
+                <input
                   type='text'
                   name='title'
-                  id='Title'
                   placeholder='Title'
-                  value={formInput.title}
-                  onChange={onchange}
+                  value={data.title}
+                  onChange={handleChange}
                 />
-              </FormGroup>
-              <FormGroup>
-                <Label for='description'>Description</Label>
-                <Input
-                  type='textarea'
-                  name='text'
-                  id='Description'
-                  value={formInput.description}
-                  onChange={onchange}
+              </label>
+              <label className='desc' name='description'>
+                <span className='desc'>Description:</span>
+                <textarea
+                  name='description'
+                  placeholder='Description'
+                  value={data.description}
+                  onChange={handleChange}
                 />
-              </FormGroup>
-              <FormGroup>
-                <Label for='file'>File</Label>
-                <Input
-                  type='file'
-                  name='file'
-                  id='File'
-                  value={formInput.image_url}
-                  onChange={onchange}
+              </label>
+              <label name='image_url'>
+                <span>Image link:</span>
+                <input
+                  type='text'
+                  name='image_url'
+                  placeholder='Link'
+                  value={data.image_url}
+                  onChange={handleChange}
                 />
-                <FormText color='muted'></FormText>
-              </FormGroup>
-              <Button>Submit</Button>
-            </Form>
+              </label>
+
+              <button type='submit'>Add</button>
+            </form>
           </FormWrapper>
         </ModalBody>
       </Modal>

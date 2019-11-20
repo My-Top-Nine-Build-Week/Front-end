@@ -1,0 +1,136 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1366 768"><defs><style>.cls-1{fill:#ff4040;}.cls-2,.cls-3,.cls-4{fill:none;stroke-miterlimit:10;stroke-width:8px;}.cls-2{stroke:#f15a24;}.cls-3{stroke:#2e3192;}.cls-4{stroke:#fcee21;}.cls-5{fill:#ff931e;}.cls-6{fill:#ed1c24;}.cls-7{fill:#006837;}.cls-8{fill:#0071bc;}.cls-9{fill:#8cc63f;}.cls-10{fill:#f7931e;}.cls-11{fill:#9e005d;}.cls-12{fill:#c1272d;}</style></defs><title>bg-tn</title>
+
+
+
+<polygon class="cls-1" points="1366 250.67 1366 0 1244.04 0 745.93 767.37 747.01 768 1030.2 768 1366 250.67"/>
+
+<ellipse class="cls-2" cx="32.81" cy="143.5" rx="16.96" ry="16">
+    <animateTransform
+        attributeName="transform"
+        attributeType="XML"
+        type="translate"
+        from="0 0"
+        to="0 50"
+        begin="0"
+        dur="10s"
+        repeatCount="indefinite"
+    />
+</ellipse>
+
+<ellipse class="cls-3" cx="702.32" cy="95" rx="16.96" ry="16"> 
+<animateTransform
+        attributeName="transform"
+        attributeType="XML"
+        type="translate"
+        from="0 0"
+        to="0 50"
+        begin="0"
+        dur="10s"
+        repeatCount="indefinite"
+    />
+</ellipse>
+
+<ellipse class="cls-4" cx="471.2" cy="400" rx="16.96" ry="16">
+<animateTransform
+        attributeName="transform"
+        attributeType="XML"
+        type="translate"
+        from="10 10"
+        to="0 60"
+        begin="0"
+        dur="10s"
+        repeatCount="indefinite"
+    />
+</ellipse>
+
+<polygon class="cls-5" points="39.62 624.53 0 582.04 58.82 570.93 39.62 624.53">
+ <animateTransform
+        attributeName="transform"
+        attributeType="XML"
+        type="translate"
+        from="50 50"
+        to="50 0"
+        begin="0"
+        dur="10s"
+        repeatCount="indefinite"
+    />
+</polygon>
+
+
+<polygon class="cls-6" points="536.85 72.53 497.23 30.04 556.05 18.93 536.85 72.53">
+ <animateTransform
+        attributeName="transform"
+        type="translate"
+        from="50 50"
+        to="0 50"
+        dur="10s"
+        repeatCount="indefinite"
+    />
+</polygon>
+
+
+<polygon class="cls-7" points="855.96 394.53 816.35 352.04 875.17 340.93 855.96 394.53">
+ <animateTransform 
+        attributeName="transform"
+        attributeType="XML"
+        type="translate"
+        from="0 50"
+        to="50 0"
+        begin="0"
+        dur="10s"
+        repeatCount="indefinite"/>
+    />
+</polygon>
+
+
+<polygon class="cls-8" points="86.35 325.08 73.4 325.08 73.4 311.72 63.26 311.72 63.26 325.08 50.3 325.08 50.3 333.1 63.26 333.1 63.26 347 73.4 347 73.4 333.1 86.35 333.1 86.35 325.08">
+ <animateTransform
+        attributeName="transform"
+        attributeType="XML"
+        type="translate"
+        from="0 0"
+        to="0 50"
+        begin="0"
+        dur="10s"
+        repeatCount="indefinite"
+    />
+</polygon>
+
+
+<polygon class="cls-9" points="614.85 669.44 602.51 665.74 606.81 653 597.15 650.1 592.85 662.83 580.51 659.12 577.93 666.76 590.27 670.47 585.79 683.72 595.45 686.62 599.93 673.38 612.27 677.09 614.85 669.44">
+<animateTransform
+        attributeName="transform"
+        attributeType="XML"
+        type="translate"
+        from="0 0"
+        to="0 50"
+        begin="0"
+        dur="10s"
+        repeatCount="indefinite"
+    />
+</polygon>
+
+
+<polygon class="cls-10" points="1286.85 225.2 1276.88 233.01 1267.83 222.74 1260.03 228.85 1269.09 239.13 1259.13 246.94 1264.56 253.1 1274.52 245.29 1283.94 255.98 1291.74 249.87 1282.32 239.18 1292.28 231.37 1286.85 225.2">
+<animateTransform
+        attributeName="transform"
+        attributeType="XML"
+        type="translate"
+        from="0 0"
+        to="0 50"
+        begin="0"
+        dur="10s"
+        repeatCount="indefinite"
+    />
+</polygon>
+
+
+<path class="cls-11" d="M327.32,246.07l-34.87,76.2a8.72,8.72,0,0,1-11.15,4.18h0a7.86,7.86,0,0,1-4.58-10.13c0-.13.1-.26.16-.39l34.87-76.2a8.72,8.72,0,0,1,11.15-4.18h0a7.86,7.86,0,0,1,4.58,10.13C327.43,245.81,327.38,245.94,327.32,246.07Z"/>
+
+<path class="cls-9" d="M243,111.28,174.53,59.17a7.72,7.72,0,0,1-1.63-10.79,5.19,5.19,0,0,1,.36-.46h0a8.85,8.85,0,0,1,11.92-1.2l68.49,52.11a7.72,7.72,0,0,1,1.7,10.79c-.12.15-.24.31-.37.46h0A8.86,8.86,0,0,1,243,111.28Z"/>
+
+<path class="cls-12" d="M169.62,711h89a8,8,0,0,1,8,8h0a8,8,0,0,1-8,8h-89a8,8,0,0,1-8-8h0A8,8,0,0,1,169.62,711Z"/>
+
+<path class="cls-8" d="M983.29,630.51l25.05-79.57a8.58,8.58,0,0,1,10.54-5.39h0a8,8,0,0,1,5.78,9.73l-.06.21-25,79.57a8.58,8.58,0,0,1-10.6,5.39h0a8,8,0,0,1-5.77-9.73Z"/>
+
+</svg>

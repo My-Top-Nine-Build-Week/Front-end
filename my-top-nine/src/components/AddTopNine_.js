@@ -75,8 +75,7 @@ const ATNWrapper = styled.div`
 
   button {
     height: 28px;
-    background-color: #aaa;
-    color: black;
+    color: #fff;
     border: none;
     border-radius: 5px;
     width: 80px;

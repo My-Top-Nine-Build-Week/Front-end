@@ -14,7 +14,25 @@ const FormWrapper = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 30px;
-  width: 50%;
+  width: 100%;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    margin: auto 10px;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 20px 0;
+  }
 `;
 
 const TopNineForm = props => {
@@ -71,6 +89,7 @@ const TopNineForm = props => {
             <form onSubmit={handleSubmit}>
               <label name='title'>
                 <span>Title:</span>
+                <br />
                 <input
                   type='text'
                   name='title'
@@ -81,6 +100,7 @@ const TopNineForm = props => {
               </label>
               <label className='desc' name='description'>
                 <span className='desc'>Description:</span>
+                <br />
                 <textarea
                   name='description'
                   placeholder='Description'
@@ -90,6 +110,7 @@ const TopNineForm = props => {
               </label>
               <label name='image_url'>
                 <span>Image link:</span>
+                <br />
                 <input
                   type='text'
                   name='image_url'
@@ -99,7 +120,9 @@ const TopNineForm = props => {
                 />
               </label>
 
-              <button type='submit'>Add</button>
+              <Button color='primary' type='submit'>
+                Add
+              </Button>
             </form>
           </FormWrapper>
         </ModalBody>

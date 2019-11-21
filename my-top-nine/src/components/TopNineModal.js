@@ -45,3 +45,15 @@ const TopNineModal = props => {
   );
 };
 export default TopNineModal;
+
+// {props.image_url == "https" ? (
+//   <img
+//     src={
+//       (props.image_url =
+//         "https://t3.ftcdn.net/jpg/02/48/42/64/240_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg")
+//     }
+//     alt={props.description}
+//   />
+// ) : (
+//   <img src={props.image_url} alt={props.description} />
+// )}

@@ -141,25 +141,6 @@ const UserTopNines = props => {
     // TODO: add code to add a different user's top-nine item to ours
   };
 
-  if (userTopNine.image_url === "") {
-    return (
-      <UTNWrapper>
-        <h2>Top Nine List for {user.name}</h2>
-        <TNLWrapper>
-          {userTopNine.map(data => (
-            <TopNineDisplay
-              key={data.user_id}
-              data={data}
-              image_url={
-                (data.image_url =
-                  "https://t3.ftcdn.net/jpg/02/48/42/64/240_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg")
-              }
-            />
-          ))}
-        </TNLWrapper>
-      </UTNWrapper>
-    );
-  }
   return (
     <UTNWrapper>
       <h2>Top Nine List for {user.name}</h2>

@@ -20,12 +20,15 @@ const ULWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     width: 300px;
-    border: 2px solid gray;
-    border-radius: 20px;
+    border: 2px solid #f8f9fa;
+    background: #f8f9fa;
     padding: 10px;
     margin: 20px;
     height: 200px;
     justify-content: space-around;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(222, 222, 222, 1);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(222, 222, 222, 1);
+    box-shadow: 10px 10px 5px 0px rgba(222, 222, 222, 1);
 
     p {
       font-size: 1.6rem;

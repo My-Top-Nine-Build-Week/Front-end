@@ -9,8 +9,8 @@ const WelcomeWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-image: url(${bg});
   background-size: cover;
   background-repeat: no-repeat;
@@ -31,7 +31,7 @@ const WelcomeWrapper = styled.div`
   }
 
   .dis a {
-    margin: 100px 0;
+    margin: 50px 0;
   }
 
   h1 {
@@ -78,6 +78,10 @@ const WelcomeWrapper = styled.div`
 
   .tn-display ul li:nth-child(6) {
     animation-delay: 0s;
+  }
+
+  .five h1 {
+    font-size: 2rem;
   }
 
   @keyframes percipitate {

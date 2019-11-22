@@ -60,9 +60,9 @@ const TopNineList = () => {
   // const newItem = item => {
   //   const addItem = setTopNineData([...topNineData, item]);
   // };
-  if (topNineData.length === 0) {
-    return <Redirect to='/addtopnine' />;
-  }
+  // if (topNineData.length === 0) {
+  //   return <Redirect to='/addtopnine' />;
+  // }
   return (
     <TNLWrapper>
       {topNineData.map(data => (

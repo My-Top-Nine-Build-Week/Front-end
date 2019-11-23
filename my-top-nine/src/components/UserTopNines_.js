@@ -175,33 +175,3 @@ function TopNineDisplay({ data, props }) {
 }
 
 export default UserTopNines;
-
-// <UTNWrapper>
-//       <div>
-//         <h3>Top Nine List for {user.name}</h3>
-
-//         {userTopNine.length === 0 && (
-//           <p>The top-nine list for {user.name} is empty!</p>
-//         )}
-
-//         {userTopNine.map(item => {
-//           return (
-//             <div className='top-nine-item' key={item.id}>
-//               <TopNineModal
-//                 title={item.title}
-//                 description={item.description}
-//                 image_url={item.image_url}
-//               />
-//               {/* <p>{item.title}</p>
-//               <p>Description: {item.description}</p>
-//               <img src={item.image_url} alt={item.title} /> */}
-//               <div className='button-bar'>
-//                 <button onClick={e => handleAdd(e, item)}>
-//                   Add to My Top Nines
-//                 </button>
-//               </div>
-//             </div>
-//           );
-//         })}
-//       </div>
-//     </UTNWrapper>

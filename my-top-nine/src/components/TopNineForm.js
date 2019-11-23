@@ -46,7 +46,9 @@ const TopNineForm = props => {
     image_url: ""
   });
 
-  const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState(
+    topNineState.topNineList.length === 0 ? true : false
+  );
   const toggle = () => setModal(!modal);
 
   const handleChange = e => {

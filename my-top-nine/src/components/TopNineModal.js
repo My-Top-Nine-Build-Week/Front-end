@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Button, Modal, ModalHeader, ModalBody } from "reactstrap";
+import { Link } from "react-router-dom";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import styled from "styled-components";
 
 const ModalImageWrapper = styled.div`
@@ -40,6 +41,10 @@ const TopNineModal = props => {
         <ModalTextWrapper>
           <ModalBody>{props.description}</ModalBody>
         </ModalTextWrapper>
+        <ModalFooter>
+        <Link to={`/edittopnine/${props.id}`}><Button color="primary">Edit</Button></Link>
+        <Link to={`/confirmdelete/${props.id}`}><Button color="danger">Delete</Button></Link>
+        </ModalFooter>
       </Modal>
     </div>
   );

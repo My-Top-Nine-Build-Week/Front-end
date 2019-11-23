@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { Button } from "reactstrap";
+import bg from "../images/bg-tn-users.svg";
 
 import { TopNineContext } from "../contexts/TopNineContext";
 import { getUsers } from "../utils/api";
@@ -10,6 +11,8 @@ const ULWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
+  width: 100%;
+  background: url(${bg});
 
   h3 {
     font-size: 3rem;

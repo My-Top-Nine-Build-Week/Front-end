@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import styled from "styled-components";
+import { Button } from "reactstrap";
 
 import { TopNineContext } from "../contexts/TopNineContext";
 
@@ -66,7 +67,7 @@ const TopNineList = () => {
   return (
     <TNLWrapper>
       {topNineData.map(data => (
-        <TopNineDisplay key={data.user_id} data={data} />
+        <TopNineDisplay key={data.user_id} data={data} />    
       ))}
       <TopNineForm />
     </TNLWrapper>
@@ -77,7 +78,7 @@ function TopNineDisplay({ data, props }) {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
-  const { title, image_url, user_id, description } = data;
+  const { title, image_url, user_id, description, id } = data;
 
   return (
     <TNLItem>
@@ -88,6 +89,7 @@ function TopNineDisplay({ data, props }) {
           title={title}
           description={description}
           image_url={image_url}
+          id={id}
         />
       </div>
     </TNLItem>
